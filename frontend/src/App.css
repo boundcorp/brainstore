@@ -15,6 +15,15 @@
 }
 
 .header {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.factory {
+  /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
   background: #8a2387; /* fallback for old browsers */
   background: -webkit-linear-gradient(
     to right,
@@ -22,18 +31,23 @@
     #e94057,
     #8a2387
   ); /* Chrome 10-25, Safari 5.1-6 */
+  background: linear-gradient(to right, #f27121, #e94057, #8a2387);
+}
+
+.store {
+  background: #40e0d0; /* fallback for old browsers */
+  background: -webkit-linear-gradient(
+    to right,
+    #ff0080,
+    #ff8c00,
+    #40e0d0
+  ); /* Chrome 10-25, Safari 5.1-6 */
   background: linear-gradient(
     to right,
-    #f27121,
-    #e94057,
-    #8a2387
+    #ff0080,
+    #ff8c00,
+    #40e0d0
   ); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
-
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
 }
 
 .header-title {
@@ -68,7 +82,7 @@
   border-radius: 8px;
   padding: 2em;
   opacity: 70%;
-  box-shadow: 0 1rem 2rem rgba(0, 0, 0, .2);
+  box-shadow: 0 1rem 2rem rgba(0, 0, 0, 0.2);
 }
 
 .input {
@@ -78,7 +92,7 @@
   background-color: #fff;
   border: 2px solid #8b8a8b;
   border-radius: 4px;
-  box-shadow: 0 1rem 2rem rgba(0, 0, 0, .2);
+  box-shadow: 0 1rem 2rem rgba(0, 0, 0, 0.2);
   margin-left: 0.5em;
   font-weight: bold;
 }
@@ -110,22 +124,9 @@
   border-radius: 10rem;
   font-weight: bold;
   font-size: 32px;
-  background: #8a2387; /* fallback for old browsers */
-  background: -webkit-linear-gradient(
-    to right,
-    #f27121,
-    #e94057,
-    #8a2387
-  ); /* Chrome 10-25, Safari 5.1-6 */
-  background: linear-gradient(
-    to right,
-    #f27121,
-    #e94057,
-    #8a2387
-  );
   color: white;
   border: none;
-  box-shadow: 0 1rem 2rem rgba(0, 0, 0, .2);
+  box-shadow: 0 1rem 2rem rgba(0, 0, 0, 0.2);
 }
 
 .rounded-divider {
@@ -133,10 +134,9 @@
   height: 4px;
   width: 80%;
   margin: 2em auto;
-  background: linear-gradient(
-    to right,
-    #f27121,
-    #e94057,
-    #8a2387
-  );
+  background: linear-gradient(to right, #f27121, #e94057, #8a2387);
+}
+
+.external-link {
+  text-decoration: none;
 }
