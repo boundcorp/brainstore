@@ -6,7 +6,7 @@ function App() {
     <div className="App">
       <header className="header">
         <div className="card">
-          <h1 className="header-title">BrainStore MakerPlace Factory</h1>
+          <h1 className="header-title">BrainStore MarketPlace Factory</h1>
           <h2 className="subheader-title">
             <div className="subheader-line">
               BrainStore helps <b>content creators</b> run managed storefronts
@@ -29,17 +29,18 @@ function App() {
               Marketplace!
             </div>
           </h2>
+          <hr className="rounded-divider" />
           <form>
             <div className='input-field'>
             <label className="input-label" htmlFor='title'>
-              Title
+              Title:
             </label>
             <input type="text" className="input title" id='title' />
             </div>
             <div className='input-field'>
             
             <label className="input-label" htmlFor='fee'>
-              Default Fee
+              Default Fee:
             </label>
             <input type="text" className="input fee" id='fee' defaultValue='5%' />
             </div>

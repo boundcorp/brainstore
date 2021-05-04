@@ -68,21 +68,23 @@
   border-radius: 8px;
   padding: 2em;
   opacity: 70%;
+  box-shadow: 0 1rem 2rem rgba(0, 0, 0, .2);
 }
 
 .input {
   font-size: 32px;
   font-family: inherit;
-  padding: 0.5em 1em;
+  padding: 0.5em;
   background-color: #fff;
   border: 2px solid #8b8a8b;
   border-radius: 4px;
-  box-shadow: 10px;
+  box-shadow: 0 1rem 2rem rgba(0, 0, 0, .2);
   margin-left: 0.5em;
+  font-weight: bold;
 }
 
 .fee {
-  width: 2em;
+  width: 2.2em;
   color: #8a2387;
 }
 
@@ -92,10 +94,11 @@
 
 .input-label {
   font-size: 32px;
+  font-weight: bold;
 }
 
 .input-field {
-  margin: 3em;
+  margin: 3em 2em;
   display: inline-block;
 }
 
@@ -103,6 +106,7 @@
   text-transform: uppercase;
   text-decoration: none;
   padding: 1.5rem 4rem;
+  margin: 2em;
   border-radius: 10rem;
   font-weight: bold;
   font-size: 32px;
@@ -120,4 +124,19 @@
     #8a2387
   );
   color: white;
+  border: none;
+  box-shadow: 0 1rem 2rem rgba(0, 0, 0, .2);
+}
+
+.rounded-divider {
+  border-radius: 5px;
+  height: 4px;
+  width: 80%;
+  margin: 2em auto;
+  background: linear-gradient(
+    to right,
+    #f27121,
+    #e94057,
+    #8a2387
+  );
 }
