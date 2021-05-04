@@ -1,5 +1,6 @@
 .App {
   text-align: center;
+  box-sizing: border-box;
 }
 
 .App-logo {
@@ -13,15 +14,40 @@
   }
 }
 
-.App-header {
-  background-color: #282c34;
+.header {
+  background: #8a2387; /* fallback for old browsers */
+  background: -webkit-linear-gradient(
+    to right,
+    #f27121,
+    #e94057,
+    #8a2387
+  ); /* Chrome 10-25, Safari 5.1-6 */
+  background: linear-gradient(
+    to right,
+    #f27121,
+    #e94057,
+    #8a2387
+  ); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+
   min-height: 100vh;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
+}
+
+.header-title {
+  font-size: 60px;
+}
+
+.subheader-title {
+  color: rgba(100, 100, 100, 0.8);
+  font-size: 30px;
+  font-weight: 400;
+}
+
+.subheader-line {
+  padding-bottom: 0.3em;
 }
 
 .App-link {
@@ -35,4 +61,63 @@
   to {
     transform: rotate(360deg);
   }
+}
+
+.card {
+  background-color: aliceblue;
+  border-radius: 8px;
+  padding: 2em;
+  opacity: 70%;
+}
+
+.input {
+  font-size: 32px;
+  font-family: inherit;
+  padding: 0.5em 1em;
+  background-color: #fff;
+  border: 2px solid #8b8a8b;
+  border-radius: 4px;
+  box-shadow: 10px;
+  margin-left: 0.5em;
+}
+
+.fee {
+  width: 2em;
+  color: #8a2387;
+}
+
+.title {
+  color: #f27121;
+}
+
+.input-label {
+  font-size: 32px;
+}
+
+.input-field {
+  margin: 3em;
+  display: inline-block;
+}
+
+.button {
+  text-transform: uppercase;
+  text-decoration: none;
+  padding: 1.5rem 4rem;
+  border-radius: 10rem;
+  font-weight: bold;
+  font-size: 32px;
+  background: #8a2387; /* fallback for old browsers */
+  background: -webkit-linear-gradient(
+    to right,
+    #f27121,
+    #e94057,
+    #8a2387
+  ); /* Chrome 10-25, Safari 5.1-6 */
+  background: linear-gradient(
+    to right,
+    #f27121,
+    #e94057,
+    #8a2387
+  );
+  color: white;
 }
