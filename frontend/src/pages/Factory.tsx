@@ -6,7 +6,7 @@ export default function FactoryPage() {
         <header className="header factory">
         <div className="card">
           <h1 className="header-title">BrainStore MarketPlace Factory</h1>
-          <h2 className="subheader-title">
+          <h2 className="subheader">
             <div className="subheader-line">
               BrainStore helps <b>content creators</b> run managed storefronts
               with Web3 Payments!
@@ -28,7 +28,7 @@ export default function FactoryPage() {
               Marketplace!
             </div>
           </h2>
-          <hr className="rounded-divider" />
+          <hr className="rounded-divider factory" />
           <form>
             <div className='input-field'>
             <label className="input-label" htmlFor='title'>

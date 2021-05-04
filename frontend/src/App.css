@@ -23,15 +23,17 @@
 }
 
 .factory {
-  /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
-  background: #8a2387; /* fallback for old browsers */
+  background: #00f260; /* fallback for old browsers */
   background: -webkit-linear-gradient(
     to right,
-    #f27121,
-    #e94057,
-    #8a2387
+    #0575e6,
+    #00f260
   ); /* Chrome 10-25, Safari 5.1-6 */
-  background: linear-gradient(to right, #f27121, #e94057, #8a2387);
+  background: linear-gradient(
+    to right,
+    #0575e6,
+    #00f260
+  ); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
 }
 
 .store {
@@ -50,12 +52,47 @@
   ); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
 }
 
+.builder {
+  background: #ffe000; /* fallback for old browsers */
+  background: -webkit-linear-gradient(
+    to right,
+    #799f0c,
+    #ffe000
+  ); /* Chrome 10-25, Safari 5.1-6 */
+  background: linear-gradient(
+    to right,
+    #799f0c,
+    #ffe000
+  ); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+}
+
+.pay {
+  background: #59c173; /* fallback for old browsers */
+  background: -webkit-linear-gradient(
+    to right,
+    #5d26c1,
+    #a17fe0,
+    #59c173
+  ); /* Chrome 10-25, Safari 5.1-6 */
+  background: linear-gradient(
+    to right,
+    #5d26c1,
+    #a17fe0,
+    #59c173
+  ); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+}
 .header-title {
   font-size: 60px;
 }
 
-.subheader-title {
+.subheader {
   color: rgba(100, 100, 100, 0.8);
+  font-size: 30px;
+  font-weight: 400;
+}
+
+.subheader-title {
+  display: inline-block;
   font-size: 30px;
   font-weight: 400;
 }
@@ -99,12 +136,8 @@
 
 .fee {
   width: 2.2em;
-  color: #8a2387;
 }
 
-.title {
-  color: #f27121;
-}
 
 .input-label {
   font-size: 32px;
@@ -134,9 +167,24 @@
   height: 4px;
   width: 80%;
   margin: 2em auto;
-  background: linear-gradient(to right, #f27121, #e94057, #8a2387);
 }
 
 .external-link {
   text-decoration: none;
+}
+
+table {
+  width: 80%;
+  margin: auto;
+}
+
+th {
+  background: #eee;
+}
+
+td,
+th {
+  text-align: left;
+  padding: 0.5rem;
+  font-size: 28px;
 }
