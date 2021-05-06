@@ -1,54 +1,38 @@
 import React from "react";
+import FactoryPage from './pages/Factory';
+import BuilderPage from './pages/Builder';
+import StorePage from './pages/Store';
+import PayPage from './pages/Pay';
+
 import "./App.css";
+import {HashRouter, Link, Route} from 'react-router-dom';
 
 function App() {
   return (
+    <HashRouter>
     <div className="App">
-      <header className="header">
-        <div className="card">
-          <h1 className="header-title">BrainStore MarketPlace Factory</h1>
-          <h2 className="subheader-title">
-            <div className="subheader-line">
-              BrainStore helps <b>content creators</b> run managed storefronts
-              with Web3 Payments!
-            </div>
-            <div className="subheader-line">
-              Are you building a <b>Web2-or-3 marketplace</b> for content
-              creators?
-            </div>
-            <div className="subheader-line">
-              Use Marketplace Factory to launch a{" "}
-              <b>non-custodial Store Builder</b> for your customers.
-            </div>
-            <div className="subheader-line">
-              Each customer deploys a <b>BrainStore</b>, which sells their goods
-              or services.
-            </div>
-            <div className="subheader-line">
-              Transaction fees are <b>automatically</b> paid back to the
-              Marketplace!
-            </div>
-          </h2>
-          <hr className="rounded-divider" />
-          <form>
-            <div className='input-field'>
-            <label className="input-label" htmlFor='title'>
-              Title:
-            </label>
-            <input type="text" className="input title" id='title' />
-            </div>
-            <div className='input-field'>
-            
-            <label className="input-label" htmlFor='fee'>
-              Default Fee:
-            </label>
-            <input type="text" className="input fee" id='fee' defaultValue='5%' />
-            </div>
-            <button className='button'>Deploy</button>
-          </form>
-        </div>
-      </header>
+    <Link to='/builder/123'>Builder</Link>
+      <Link to='/store/123'>Store</Link>
+      <Link to='/factory'>Factory</Link>
+      <Link to='/store/123/pay/4'>Pay</Link>
+      
+      <Route exact path='/builder/:address'>
+        <BuilderPage />
+      </Route>
+      <Route exact path='/factory'>
+        <FactoryPage />
+      </Route>
+      <Route exact path='/store/:address'>
+        <StorePage />
+      </Route>
+
+      <Route exact path='/store/:address/pay/:ether'>
+        <PayPage />
+      </Route>
+      
+      
     </div>
+    </HashRouter>
   );
 }
 
