@@ -1,11 +1,30 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import "../App.css";
+import { useContext } from 'react';
+import { useHistory } from 'react-router-dom';
+import { StoreBuilderContext } from '../hardhat/SymfoniContext';
 
 export default function BuilderPage() {
+  const builder = useContext(StoreBuilderContext)
+  const history = useHistory();
+  const [status, setStatus] = useState("");
+  const [ready, setReady] = useState("");
+  const [storeTitle, setStoreTitle] = useState("")
+  
+  useEffect(() => {
+      const doAsync = async () => {
+          if (!builder.instance) return
+          console.log("Builder is deployed at ", builder.instance.address)
+          setReady(builder.instance.address)
+          setStoreTitle(await builder.instance.getTitle())
+      };
+      doAsync();
+  }, [builder])
+
   return (
     <header className="header builder">
       <div className="card">
-        <h1 className="header-title">StoreBuilder: StreamHuddle Inc</h1>
+        <h1 className="header-title">StoreBuilder: {storeTitle}</h1>
         
         <table className="table">
           <caption>

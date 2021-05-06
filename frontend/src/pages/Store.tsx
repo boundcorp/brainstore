@@ -1,7 +1,9 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
+
 import "../App.css";
 
 export default function StorePage() {
+  
     return (
         <header className="header store">
         <div className="card">
