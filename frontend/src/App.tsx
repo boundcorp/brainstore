@@ -18,9 +18,7 @@ function App() {
                 <Route exact path='/builder/:address'>
                     <BuilderPage/>
                 </Route>
-                <Route exact path='/store/:address'>
-                    <StorePage/>
-                </Route>
+                <Route exact path='/store/:address' component={StorePage} />
 
                 <Route exact path='/store/:address/pay/:ether'>
                     <PayPage/>

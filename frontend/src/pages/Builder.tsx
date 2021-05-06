@@ -1,25 +1,43 @@
 import React, { useEffect, useState } from "react";
 import "../App.css";
 import { useContext } from 'react';
-import { useHistory } from 'react-router-dom';
+import { useHistory, useParams } from 'react-router-dom';
 import { StoreBuilderContext } from '../hardhat/SymfoniContext';
+import {ethers} from "ethers";
+import {StoreBuilder} from "../hardhat/typechain/StoreBuilder";
+
+interface RouteParams {
+  address: string
+}
 
 export default function BuilderPage() {
-  const builder = useContext(StoreBuilderContext)
+  let Builder = useContext(StoreBuilderContext)
+
+  const [builder, setBuilder] = useState<StoreBuilder>()
+
   const history = useHistory();
+  const params = useParams<RouteParams>();
   const [status, setStatus] = useState("");
   const [ready, setReady] = useState("");
   const [storeTitle, setStoreTitle] = useState("")
-  
+
   useEffect(() => {
       const doAsync = async () => {
-          if (!builder.instance) return
-          console.log("Builder is deployed at ", builder.instance.address)
-          setReady(builder.instance.address)
-          setStoreTitle(await builder.instance.getTitle())
+          if (!Builder.factory || !Builder.instance) return
+          if (!builder) {
+            console.log("DO AN ATTACH")
+            setBuilder(await Builder.factory.attach(params.address))
+          } else {
+            console.log("Builder is deployed at ", builder.address)
+            setReady(builder.address)
+            setStoreTitle(await builder.getTitle())
+          }
       };
       doAsync();
-  }, [builder])
+  }, [Builder, builder])
+
+  if(!ready)
+    return <>Loading...</>
 
   return (
     <header className="header builder">

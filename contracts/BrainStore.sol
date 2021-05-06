@@ -39,6 +39,10 @@ contract StoreBuilder is Ownable, PullPayment {
     }
   }
 
+function getTitle() public view returns (string memory _title) {
+_title = title;
+}
+
   function sweepStores() public {
     for(uint i=0;i<stores.length; i++){
         stores[i].sweep();
