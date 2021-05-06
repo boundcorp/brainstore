@@ -1,73 +1,143 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, FC } from "react";
 import "../App.css";
-import { useContext } from 'react';
-import { useHistory, useParams } from 'react-router-dom';
-import { StoreBuilderContext } from '../hardhat/SymfoniContext';
-import {ethers} from "ethers";
-import {StoreBuilder} from "../hardhat/typechain/StoreBuilder";
+import { useContext } from "react";
+import { useHistory, useParams } from "react-router-dom";
+import { StoreBuilderContext, BrainStoreContext } from "../hardhat/SymfoniContext";
+import { StoreBuilder } from "../hardhat/typechain/StoreBuilder";
+import { BrainStore} from "../hardhat/typechain/BrainStore";
 
 interface RouteParams {
-  address: string
+  address: string;
+}
+
+interface RowProps {
+  address: string,
+  builderAddress: string
+}
+
+const StoreRow:FC<RowProps> = ({address, builderAddress}) => {
+  let Store = useContext(BrainStoreContext);
+
+  const [store, setStore] = useState<BrainStore>();
+  const [ready, setReady] = useState("");
+  const [fee, setFee] = useState(0);
+  const [title, setTitle] = useState("");
+  const [balance, setBalance] = useState<string>();
+
+  useEffect(() => {
+    const doAsync = async () => {
+      if (!Store.factory) return;
+      if (!store) {
+        setStore(await Store.factory.attach(address));
+      } else {
+        console.debug("Store is deployed at ", store.address);
+        setReady(store.address);
+        setTitle(await store.getTitle());
+        setFee((await store.getFee()) / 10000);
+        setBalance(await(await store.payments(builderAddress)).toString());
+      }
+    };
+    doAsync();
+  }, [Store, store, builderAddress]);
+  return <>
+    <td>{address}</td>
+    <td>{fee}</td>
+    <td>{balance}</td>
+  </>
 }
 
 export default function BuilderPage() {
-  let Builder = useContext(StoreBuilderContext)
+  let Builder = useContext(StoreBuilderContext);
 
-  const [builder, setBuilder] = useState<StoreBuilder>()
+  const [builder, setBuilder] = useState<StoreBuilder>();
 
   const history = useHistory();
   const params = useParams<RouteParams>();
   const [status, setStatus] = useState("");
   const [ready, setReady] = useState("");
-  const [storeTitle, setStoreTitle] = useState("")
+  const [fee, setFee] = useState(0);
+  const [title, setTitle] = useState("");
+  const [storeTitle, setStoreTitle] = useState("");
+  const [balance, setBalance] = useState<string>();
+
+  const [stores, setStores] = useState<string[]>();
 
   useEffect(() => {
-      const doAsync = async () => {
-          if (!Builder.factory || !Builder.instance) return
-          if (!builder) {
-            console.log("DO AN ATTACH")
-            setBuilder(await Builder.factory.attach(params.address))
-          } else {
-            console.log("Builder is deployed at ", builder.address)
-            setReady(builder.address)
-            setStoreTitle(await builder.getTitle())
-          }
-      };
-      doAsync();
-  }, [Builder, builder])
+    const doAsync = async () => {
+      if (!Builder.factory || !Builder.instance) return;
+      if (!builder) {
+        setBuilder(await Builder.factory.attach(params.address));
+      } else {
+        console.debug("Builder is deployed at ", builder.address);
+        setReady(builder.address);
+        setStoreTitle(await builder.getTitle());
+        setStores(await builder.getStores());
+        setFee((await builder.getDefaultFee()) / 10000);
+        setBalance(await(await builder.payments(await builder.owner())).toString());
+      }
+    };
+    doAsync();
+  }, [Builder, builder]);
 
-  if(!ready)
-    return <>Loading...</>
+  const deploy = async () => {
+    if (!builder) {
+      setStatus("Wait for the builder to deploy first!");
+    } else {
+      setStatus("Transaction Prompt");
+      const tx = await builder.createStore(title);
+      setStatus("Deploying....");
+      const receipt = await tx.wait(0);
+      if (receipt.events)
+        receipt.events.map((event) => {
+          if (event.event == "BrainStoreCreated" && event.args) {
+            setStatus(`Deployed to ${event.args.storeAddress}`);
+            history.push(`/store/${event.args.storeAddress}`);
+          }
+        });
+    }
+  };
+
+  const withdraw = async () => {
+    if (!builder) {
+      setStatus("Wait for the builder to deploy first!");
+    } else {
+      const tx = await builder.collectFees();
+      console.log("withdrawl success", tx);
+    }
+  };
+
+  if (!ready || !builder) return <>Loading...</>;
 
   return (
     <header className="header builder">
       <div className="card">
         <h1 className="header-title">StoreBuilder: {storeTitle}</h1>
-        
+
         <table className="table">
           <caption>
-            <h2 className="subheader-title">2 BrainStores Deployed</h2>
-            <button className="button builder">Withdraw ~17.4Ξ</button>
+            <h2 className="subheader-title">
+              {stores?.length} BrainStores Deployed
+            </h2>
+            <button className="button builder" onClick={withdraw}>
+              Withdraw {balance} Ξ
+            </button>
             <br />
           </caption>
           <thead>
             <tr>
               <th>Title</th>
               <th>Fee</th>
-              <th>Lifetime Value</th>
+              <th>Holding Balance</th>
             </tr>
           </thead>
           <tbody>
-            <tr>
-              <td>LeeTV</td>
-              <td>5%</td>
-              <td>32.7Ξ</td>
-            </tr>
-            <tr>
-              <td>GamePray</td>
-              <td>1%</td>
-              <td>2.2Ξ</td>
-            </tr>
+            {stores?.map((address) => (
+              <tr key={address}>
+                <StoreRow address={address} builderAddress={builder.address}>
+
+                </StoreRow>
+              </tr>
+            ))}
           </tbody>
         </table>
         <hr className="rounded-divider builder" />
@@ -77,20 +147,29 @@ export default function BuilderPage() {
             <label className="input-label" htmlFor="title">
               BrainStore Title:
             </label>
-            <input type="text" className="input title" id="title" />
+            <input
+              type="text"
+              className="input title"
+              id="title"
+              defaultValue={title}
+              onChange={(e) => setTitle(e.target.value)}
+            />
           </div>
           <div className="input-field">
             <label className="input-label" htmlFor="fee">
-              Default Fee:
+              Vendor Fee:
             </label>
             <input
               type="text"
               className="input fee"
               id="fee"
-              defaultValue="5%"
+              value={fee+ "%"}
+              disabled
             />
           </div>
-          <button className="button builder">Deploy</button>
+          <button className="button builder" onClick={deploy}>
+            Deploy
+          </button>
         </form>
       </div>
     </header>

@@ -118,8 +118,10 @@
   background-color: aliceblue;
   border-radius: 8px;
   padding: 2em;
+  margin: 2em;
   opacity: 70%;
   box-shadow: 0 1rem 2rem rgba(0, 0, 0, 0.2);
+  text-align: center;
 }
 
 .input {
@@ -135,7 +137,7 @@
 }
 
 .fee {
-  width: 2.2em;
+  width: 4em;
 }
 
 
