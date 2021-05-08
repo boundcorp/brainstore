@@ -2,20 +2,23 @@ import React, { useEffect, useState, FC } from "react";
 import "../App.css";
 import { useContext } from "react";
 import { useHistory, useParams } from "react-router-dom";
-import { StoreBuilderContext, BrainStoreContext } from "../hardhat/SymfoniContext";
+import {
+  StoreBuilderContext,
+  BrainStoreContext,
+} from "../hardhat/SymfoniContext";
 import { StoreBuilder } from "../hardhat/typechain/StoreBuilder";
-import { BrainStore} from "../hardhat/typechain/BrainStore";
+import { BrainStore } from "../hardhat/typechain/BrainStore";
 
 interface RouteParams {
   address: string;
 }
 
 interface RowProps {
-  address: string,
-  builderAddress: string
+  address: string;
+  builderAddress: string;
 }
 
-const StoreRow:FC<RowProps> = ({address, builderAddress}) => {
+const StoreRow: FC<RowProps> = ({ address, builderAddress }) => {
   let Store = useContext(BrainStoreContext);
 
   const [store, setStore] = useState<BrainStore>();
@@ -34,17 +37,19 @@ const StoreRow:FC<RowProps> = ({address, builderAddress}) => {
         setReady(store.address);
         setTitle(await store.getTitle());
         setFee((await store.getFee()) / 10000);
-        setBalance(await(await store.payments(builderAddress)).toString());
+        setBalance(await (await store.payments(builderAddress)).toString());
       }
     };
     doAsync();
   }, [Store, store, builderAddress]);
-  return <>
-    <td>{address}</td>
-    <td>{fee}</td>
-    <td>{balance}</td>
-  </>
-}
+  return (
+    <>
+      <td>{address}</td>
+      <td>{fee}%</td>
+      <td>{balance} Ξ</td>
+    </>
+  );
+};
 
 export default function BuilderPage() {
   let Builder = useContext(StoreBuilderContext);
@@ -73,7 +78,9 @@ export default function BuilderPage() {
         setStoreTitle(await builder.getTitle());
         setStores(await builder.getStores());
         setFee((await builder.getDefaultFee()) / 10000);
-        setBalance(await(await builder.payments(await builder.owner())).toString());
+        setBalance(
+          await (await builder.payments(await builder.owner())).toString()
+        );
       }
     };
     doAsync();
@@ -89,7 +96,7 @@ export default function BuilderPage() {
       const receipt = await tx.wait(0);
       if (receipt.events)
         receipt.events.map((event) => {
-          if (event.event == "BrainStoreCreated" && event.args) {
+          if (event.event === "BrainStoreCreated" && event.args) {
             setStatus(`Deployed to ${event.args.storeAddress}`);
             history.push(`/store/${event.args.storeAddress}`);
           }
@@ -101,12 +108,26 @@ export default function BuilderPage() {
     if (!builder) {
       setStatus("Wait for the builder to deploy first!");
     } else {
-      const tx = await builder.collectFees();
+      const tx = await builder.withdrawPayments(await builder.owner());
       console.log("withdrawl success", tx);
     }
   };
 
-  if (!ready || !builder) return <>Loading...</>;
+  const collect = async () => {
+    if (!builder) {
+      setStatus("Wait for the builder to deploy first!");
+    } else {
+      const tx = await builder.collectFees();
+      console.log("collect fees success", tx);
+      setBalance(
+        await (await builder.payments(await builder.owner())).toString()
+      );
+    }
+  };
+
+  if (!ready || !builder || !stores) return <>Loading...</>;
+
+  const deployedString = `${stores.length} BrainStore${stores.length === 1 ? '' : 's'} Deployed`
 
   return (
     <header className="header builder">
@@ -115,9 +136,12 @@ export default function BuilderPage() {
 
         <table className="table">
           <caption>
-            <h2 className="subheader-title">
-              {stores?.length} BrainStores Deployed
-            </h2>
+              <h2 className="subheader-title">{deployedString}</h2>
+             
+            
+            <button className="button builder" onClick={collect}>
+              Collect Fees
+            </button>
             <button className="button builder" onClick={withdraw}>
               Withdraw {balance} Ξ
             </button>
@@ -133,9 +157,10 @@ export default function BuilderPage() {
           <tbody>
             {stores?.map((address) => (
               <tr key={address}>
-                <StoreRow address={address} builderAddress={builder.address}>
-
-                </StoreRow>
+                <StoreRow
+                  address={address}
+                  builderAddress={builder.address}
+                ></StoreRow>
               </tr>
             ))}
           </tbody>
@@ -163,7 +188,7 @@ export default function BuilderPage() {
               type="text"
               className="input fee"
               id="fee"
-              value={fee+ "%"}
+              value={fee + "%"}
               disabled
             />
           </div>

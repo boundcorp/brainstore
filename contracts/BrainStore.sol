@@ -30,14 +30,19 @@ contract StoreBuilder is Ownable, PullPayment {
     return address(store);
   }
 
-  function getStores() public view returns (BrainStore[] memory _stores) {
-    _stores = new BrainStore[](stores.length);
+  function getStores() public view returns (address[] memory _stores) {
+    _stores = new address[](stores.length);
     uint count;
     for(uint i=0;i<stores.length; i++){
-      _stores[count] = stores[i];
+      _stores[count] = address(stores[i]);
       count++;
     }
   }
+  
+
+function getDefaultFee() public view returns (uint32 feePoints) {
+feePoints = defaultFeePoints;
+}
 
 function getTitle() public view returns (string memory _title) {
 _title = title;

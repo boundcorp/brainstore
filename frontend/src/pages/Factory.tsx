@@ -10,6 +10,7 @@ export default function FactoryPage() {
   const [ready, setReady] = useState("");
   const [fee, setFee] = useState(5);
   const [title, setTitle] = useState("");
+  
   useEffect(() => {
     const doAsync = async () => {
       if (!factory.instance) return;
@@ -29,7 +30,7 @@ export default function FactoryPage() {
       const receipt = await tx.wait(0);
       if (receipt.events)
         receipt.events.map((event) => {
-          if (event.event == "StoreBuilderCreated" && event.args) {
+          if (event.event === "StoreBuilderCreated" && event.args) {
             setStatus(`Deployed to ${event.args.builderAddress}`);
             history.push(`/builder/${event.args.builderAddress}`);
           }
@@ -42,7 +43,7 @@ export default function FactoryPage() {
     <header className="header factory">
       <div className="card">
         <h1 className="header-title">BrainStore MarketPlace Factory</h1>
-        {status ? <h2>{status}</h2> : null}
+        
         <h2 className="subheader">
           <div className="subheader-line">
             BrainStore helps <b>content creators</b> run managed storefronts
@@ -95,6 +96,7 @@ export default function FactoryPage() {
             Deploy
           </button>
         </form>
+        {status ? <h2>Status: {status}</h2> : null}
       </div>
     </header>
   );

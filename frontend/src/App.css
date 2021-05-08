@@ -85,6 +85,12 @@
   font-size: 60px;
 }
 
+@media only screen and (max-width: 600px) {
+  .header-title {
+    font-size: 50px;
+  }
+}
+
 .subheader {
   color: rgba(100, 100, 100, 0.8);
   font-size: 30px;
@@ -136,6 +142,12 @@
   font-weight: bold;
 }
 
+@media only screen and (max-width: 600px) {
+  .input {
+    padding: 0.2em;
+  }
+}
+
 .fee {
   width: 4em;
 }
@@ -146,9 +158,21 @@
   font-weight: bold;
 }
 
+@media only screen and (max-width: 600px) {
+  .input-label {
+    font-size: 28px;
+  }
+}
+
 .input-field {
   margin: 3em 2em;
   display: inline-block;
+}
+
+@media only screen and (max-width: 600px) {
+  .input-field {
+    margin: 2em 1em;
+  }
 }
 
 .button {
@@ -162,6 +186,14 @@
   color: white;
   border: none;
   box-shadow: 0 1rem 2rem rgba(0, 0, 0, 0.2);
+}
+
+@media only screen and (max-width: 600px) {
+  .button {
+    font-size: 22px;
+    margin: 1em;
+    padding: .75rem 2rem;
+  }
 }
 
 .rounded-divider {
@@ -189,4 +221,7 @@ th {
   text-align: left;
   padding: 0.5rem;
   font-size: 28px;
+}
+.small-margin {
+  margin: 0 0 0 0.2em;
 }

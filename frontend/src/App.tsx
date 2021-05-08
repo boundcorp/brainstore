@@ -5,7 +5,7 @@ import StorePage from './pages/Store';
 import PayPage from './pages/Pay';
 
 import "./App.css";
-import {HashRouter, Link, Route} from 'react-router-dom';
+import {HashRouter, Route} from 'react-router-dom';
 import {Symfoni} from "./hardhat/SymfoniContext";
 
 function App() {
@@ -20,9 +20,7 @@ function App() {
                 </Route>
                 <Route exact path='/store/:address' component={StorePage} />
 
-                <Route exact path='/store/:address/pay/:ether'>
-                    <PayPage/>
-                </Route>
+                <Route exact path='/store/:address/pay/:amount' component={PayPage} />
             </HashRouter>
         </Symfoni>
     );
