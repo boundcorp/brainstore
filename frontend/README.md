@@ -1,31 +1,13 @@
-# Get started
+# BrainStore
 
-1. Clone the repo and cd into it `git clone https://github.com/symfoni/hardhat-react-boilerplate.git MyProject && cd MyProject`
-2. Install deps with yarn `yarn` or npm `npm install`
-3. Start hardhat `npx hardhat node --watch`
-   ![](https://media.giphy.com/media/9l6z9MzXfHX9gKzbvU/giphy.gif)
+![cover photo](https://github.com/boundcorp/brainstore/blob/master/docs/cover-photo.png)
 
-```text
-It runs up a Hardhat node, compile contracts, generates typescript interfaces, creates React context and instantiates your contract instances and factories with frontend provider.
-```
+This project is a simple solidity SmartContract of a 3-layer self-service Factory pattern, with a hardhat + react frontend; the initial Factory contract is deployed to allow anyone to create a Marketplace ("Store Builder") - the owner of that Marketplace is then a self-service interface for content creators to deploy a new BrainStore, which is just a direct payments gateway with fee splitting logic.
 
-4. Open up a new terminal
-5. `cd frontend`
-6. Install deps with yarn `yarn` or npm `npm install`
-7. Start React app with yarn `yarn start` or npm `npm start`
+Crucially, the content creator is the actor who deploys and controls the BrainStore contract; the content creator can transfer ownership, update the title, withdraw funds, and perform all control functions on the BrainStore, except for adjusting the feeBasis quantity and feeProvider address.
 
-The frontend should start up at http://localhost:3000/.
+# Before BrainStore
+![before brainstore](https://github.com/boundcorp/brainstore/blob/master/docs/traditional-saas-marketplace.png)
 
-Because of this default hardhat.config.ts it will first try to connect with an injected provider like Metamask (web3modal package does this).
-
-If nothing found it will try to connect with your hardhat node. On localhost and hardhat nodes it will inject your mnemonic into the frontend so you have a "browser wallet" that can both call and send transactions. NB! Dont ever put a mnemonic with actual value here. We will limit this feature going forward so its more explicit.
-
-```ts
-const config: HardhatUserConfig = {
-  react: {
-    providerPriority: ["web3modal", "hardhat"],
-  },
-};
-```
-
-The default mnemonic currently used by hardhat is `test test test test test test test test test test test junk`
+# After BrainStore
+![with brainstore](https://github.com/boundcorp/brainstore/blob/master/docs/brainstore-marketplace.png)
