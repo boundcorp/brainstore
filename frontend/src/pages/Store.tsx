@@ -4,6 +4,7 @@ import { BrainStore } from "../hardhat/typechain/BrainStore";
 import "../App.css";
 import { useHistory, useParams } from "react-router-dom";
 import { BrainStoreContext } from "../hardhat/SymfoniContext";
+import {ethers} from "ethers";
 
 interface RouteParams {
   address: string;
@@ -27,11 +28,13 @@ export default function StorePage() {
       } else {
         console.debug("Store is deployed at ", store.address);
         setStoreTitle(await store.getTitle());
-        setBalance(await (await store.getBalance()).toString());
+        setBalance(await (await store.payments(await store.owner())).toString());
       }
     };
     doAsync();
   }, [Store, store]);
+
+  document.title = `Store: ${storeTitle}`;
 
   const withdraw = async () => {
     if (!store) {
@@ -59,7 +62,7 @@ export default function StorePage() {
       <div className="card">
         <h1 className="header-title">My BrainStore:<br />{storeTitle}</h1>
         <button className="button store" onClick={withdraw}>
-          Withdraw {balance} Ξ
+          Withdraw {ethers.utils.formatEther(balance || "0")} Ξ
         </button>
         <hr className="rounded-divider store" />
         <form>

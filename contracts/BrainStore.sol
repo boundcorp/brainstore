@@ -1,7 +1,6 @@
 //SPDX-License-Identifier: Unlicense
 pragma solidity ^0.8.0;
 
-import "hardhat/console.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
 import "@openzeppelin/contracts/security/PullPayment.sol";
 
@@ -17,7 +16,7 @@ contract StoreBuilder is Ownable, PullPayment {
   event Received(address, uint);
 
   constructor(string memory _title, uint32 _defaultFeePoints) {
-    console.log("Deploying a StoreBuilder");
+    //console.log("Deploying a StoreBuilder");
     title = _title;
     defaultFeePoints = _defaultFeePoints;
   }
@@ -58,10 +57,11 @@ _title = title;
     for(uint i=0;i<stores.length; i++){
       stores[i].withdrawPayments(payable(address(this)));
     }
-  }
-
-  function transferFees() public onlyOwner {
     _asyncTransfer(owner(), address(this).balance);
+}
+
+  function transferFees(address payable payee) public onlyOwner {
+    _asyncTransfer(payee, address(this).balance);
   }
 
   receive() external payable {
@@ -77,7 +77,7 @@ contract BrainStore is Ownable, PullPayment {
   event Received(address, uint);
 
   constructor(string memory _title, uint32 _feePoints) {
-    console.log("Deploying a BrainStore", _title, _feePoints);
+    //console.log("Deploying a BrainStore", _title, _feePoints);
     feeProvider = msg.sender;
     title = _title;
     feePoints = _feePoints;
@@ -86,7 +86,7 @@ contract BrainStore is Ownable, PullPayment {
   function setFee(uint32 _feePoints) public {
     require(msg.sender == feeProvider, "only the feeProvider can change the fee");
 
-    console.log("Setting Store Fee:", title, _feePoints);
+    //console.log("Setting Store Fee:", title, _feePoints);
     feePoints = _feePoints;
   }
 
@@ -136,7 +136,7 @@ contract StoreBuilderFactory {
   StoreBuilder[] builders;
 
   constructor() {
-    console.log("Deploying a StoreBuilderFactory");
+    //console.log("Deploying a StoreBuilderFactory");
   }
 
   event StoreBuilderCreated(address builderAddress, uint32 feePoints);

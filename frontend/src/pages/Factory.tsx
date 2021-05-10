@@ -10,7 +10,9 @@ export default function FactoryPage() {
   const [ready, setReady] = useState("");
   const [fee, setFee] = useState(5);
   const [title, setTitle] = useState("");
-  
+
+  document.title = `BrainStore Builder Factory`;
+
   useEffect(() => {
     const doAsync = async () => {
       if (!factory.instance) return;

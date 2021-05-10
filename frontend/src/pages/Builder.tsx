@@ -8,6 +8,7 @@ import {
 } from "../hardhat/SymfoniContext";
 import { StoreBuilder } from "../hardhat/typechain/StoreBuilder";
 import { BrainStore } from "../hardhat/typechain/BrainStore";
+import {ethers} from "ethers";
 
 interface RouteParams {
   address: string;
@@ -15,14 +16,15 @@ interface RouteParams {
 
 interface RowProps {
   address: string;
-  builderAddress: string;
+  builder: StoreBuilder;
 }
 
-const StoreRow: FC<RowProps> = ({ address, builderAddress }) => {
+const StoreRow: FC<RowProps> = ({ address, builder}) => {
   let Store = useContext(BrainStoreContext);
 
   const [store, setStore] = useState<BrainStore>();
   const [ready, setReady] = useState("");
+  const [status, setStatus] = useState("")
   const [fee, setFee] = useState(0);
   const [title, setTitle] = useState("");
   const [balance, setBalance] = useState<string>();
@@ -37,22 +39,32 @@ const StoreRow: FC<RowProps> = ({ address, builderAddress }) => {
         setReady(store.address);
         setTitle(await store.getTitle());
         setFee((await store.getFee()) / 10000);
-        setBalance(await (await store.payments(builderAddress)).toString());
+        setBalance(await (await store.payments(builder.address)).toString());
       }
     };
     doAsync();
-  }, [Store, store, builderAddress]);
+  }, [Store, store, builder]);
+
+  const withdraw = async () => {
+    if (!builder) {
+      setStatus("Wait for the builder to deploy first!");
+    } else {
+      const tx = await builder.withdrawPayments(await builder.address);
+      console.log("withdrawl success", tx);
+    }
+  };
   return (
     <>
-      <td>{address}</td>
+      <td>{title || address}</td>
       <td>{fee}%</td>
-      <td>{balance} Ξ</td>
+      <td><button onClick={withdraw}>Widthdraw {ethers.utils.formatEther(balance || "0")} Ξ</button>{status}</td>
     </>
   );
 };
 
 export default function BuilderPage() {
   let Builder = useContext(StoreBuilderContext);
+
 
   const [builder, setBuilder] = useState<StoreBuilder>();
 
@@ -62,10 +74,12 @@ export default function BuilderPage() {
   const [ready, setReady] = useState("");
   const [fee, setFee] = useState(0);
   const [title, setTitle] = useState("");
-  const [storeTitle, setStoreTitle] = useState("");
+  const [builderTitle, setBuilderTitle] = useState("");
   const [balance, setBalance] = useState<string>();
 
   const [stores, setStores] = useState<string[]>();
+
+  document.title = `Builder: ${builderTitle}`;
 
   useEffect(() => {
     const doAsync = async () => {
@@ -75,7 +89,7 @@ export default function BuilderPage() {
       } else {
         console.debug("Builder is deployed at ", builder.address);
         setReady(builder.address);
-        setStoreTitle(await builder.getTitle());
+        setBuilderTitle(await builder.getTitle());
         setStores(await builder.getStores());
         setFee((await builder.getDefaultFee()) / 10000);
         setBalance(
@@ -132,7 +146,7 @@ export default function BuilderPage() {
   return (
     <header className="header builder">
       <div className="card">
-        <h1 className="header-title">StoreBuilder: {storeTitle}</h1>
+        <h1 className="header-title">StoreBuilder: {builderTitle}</h1>
 
         <table className="table">
           <caption>
@@ -143,7 +157,7 @@ export default function BuilderPage() {
               Collect Fees
             </button>
             <button className="button builder" onClick={withdraw}>
-              Withdraw {balance} Ξ
+              Withdraw {ethers.utils.formatEther(balance || "0")} Ξ
             </button>
             <br />
           </caption>
@@ -159,7 +173,7 @@ export default function BuilderPage() {
               <tr key={address}>
                 <StoreRow
                   address={address}
-                  builderAddress={builder.address}
+                  builder={builder}
                 ></StoreRow>
               </tr>
             ))}

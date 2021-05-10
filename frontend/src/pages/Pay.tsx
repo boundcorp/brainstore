@@ -16,6 +16,7 @@ export default function PayPage() {
   const [storeTitle, setStoreTitle] = useState("");
   const params = useParams<RouteParams>();
   const [status, setStatus] = useState("");
+  document.title = `Pay ${storeTitle} ${params.amount}Ξ`
 
   const pay = async () => {
     if (!store) {
